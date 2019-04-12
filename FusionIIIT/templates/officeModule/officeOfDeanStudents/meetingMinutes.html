@@ -30,7 +30,7 @@
 </div>
 <!--Pending minutes starts here-->
                  <div class="ui tab active segment" data-tab="pending">
-                     <table class="ui very basic  celled table">
+                     <table class="ui very basic celled table">
                          <thead>
                                             <tr>
                                                 <th class="two wide column">Agenda</th>
@@ -45,23 +45,24 @@
                                 <form class="ui  form" action="meeting_Minutes/" method="post" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     {% for details in meetingMinutes%}
-                                <td>{{  details.agenda }}</td>
-                                <td>{{  details.time }}</td>
-                                <td>{{  details.venue }}</td>
-                                <td>{{  details.date }}
+                                <td >{{  details.agenda }}</td>
+                                <td >{{  details.time }}</td>
+                                <td >{{  details.venue }}</td>
+                                <td >{{  details.date }}
                                     <input type="text" name="id" hidden="true" value="{{details.pk}}">
                                 </td>
-                                <td><input type="file" name="minutes_file" accept=".pdf, .doc, .docx"  placeholder="meeting minutes"></td>
-                                <td> <button class="ui button" type="submit">Submit</button></td>
-                           </tr>
-                                {% endfor %}
+                                    <td ><div class="ui mini input"><input type="file" name="minutes_file" accept=".pdf, .doc, .docx"  placeholder="meeting minutes"></div></td>
+                                <td > <button class="mini ui button positive" type="submit">Submit</button></td>
                             </form>
-                            
-                     
+                        </tr>
+                                {% endfor %}
+
+
+
                      </table>
-                     
+
                 </div>
-                    
+
                 <!-- Pending minutes ends here-->
                 <div class="ui tab segment" data-tab="submitted">
                     <table class="ui very basic  celled table">
