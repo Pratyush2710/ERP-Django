@@ -7,7 +7,7 @@ from applications.gymkhana.models import Club_budget,Club_info, Session_info
 from applications.globals.models import *
 import json
 from django.contrib.auth.decorators import login_required
-from datetime import *
+import datetime,time
 
 """
     Default view for Dean Students Module
@@ -117,15 +117,32 @@ def holdingMeeting(request):
     success_msg = 'none'
     """getting input form data from POST request"""
     date = request.POST.get('date')
-    date = request.POST.get('date')
     Time = request.POST.get('time')
     Venue = request.POST.get('venue')
     Agenda = request.POST.get('agenda')
-    """inserting a new record with these values in database"""
-    p = Meeting(venue=Venue, date=date, time=Time, agenda=Agenda)
-    p.save()
-    success_msg="Meeting created successfully. Waiting for Suprintendent for the MOM"
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=1, success_msg=success_msg))
+
+    time_diff = 0
+
+    if date == '':
+        err_msg = 'Date is required'
+    elif Time == '':
+        err_msg = 'Time is required'
+        curr = datetime.datetime.now().timestamp()
+        given = datetime.datetime.strptime(date + " " + Time, '%Y-%m-%d %H:%M').timestamp()
+        time_diff = given - curr
+    elif Venue == '':
+        err_msg = 'Venue is required'
+    elif Agenda == '':
+        err_msg = 'Agenda is required'
+    elif time_diff < 0:
+        err_msg = "Back Date and Time not allowed."
+    else:
+        """inserting a new record with these values in database"""
+        p = Meeting(venue=Venue, date=date, time=Time, agenda=Agenda)
+        p.save()
+        success_msg="Meeting created successfully. Waiting for Suprintendent for the MOM"
+
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=1, success_msg=success_msg, err_msg=err_msg))
 
 
 """
