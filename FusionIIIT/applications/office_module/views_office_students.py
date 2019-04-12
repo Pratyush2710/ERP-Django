@@ -7,6 +7,7 @@ from applications.gymkhana.models import Club_budget,Club_info, Session_info
 from applications.globals.models import *
 import json
 from django.contrib.auth.decorators import login_required
+from datetime import *
 
 """
     Default view for Dean Students Module
@@ -112,8 +113,10 @@ def officeOfDeanStudents(request):
 
 @login_required
 def holdingMeeting(request):
-
+    err_msg = 'none'
+    success_msg = 'none'
     """getting input form data from POST request"""
+    date = request.POST.get('date')
     date = request.POST.get('date')
     Time = request.POST.get('time')
     Venue = request.POST.get('venue')
@@ -121,7 +124,8 @@ def holdingMeeting(request):
     """inserting a new record with these values in database"""
     p = Meeting(venue=Venue, date=date, time=Time, agenda=Agenda)
     p.save()
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=1))
+    success_msg="Meeting created successfully. Waiting for Suprintendent for the MOM"
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=1, success_msg=success_msg))
 
 
 """
@@ -134,12 +138,15 @@ def holdingMeeting(request):
 
 @login_required
 def meetingMinutes(request):
+    err_msg = 'none'
+    success_msg = 'none'
     file=request.FILES['minutes_file']
     id=request.POST.get('id')
     meeting_object=Meeting.objects.get(pk=id)
     meeting_object.minutes_file=file
     meeting_object.save()
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=6))
+    success_msg="MOM uploaded successfully"
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=6, success_msg=success_msg))
 
 
 @login_required
@@ -171,13 +178,14 @@ def hostelRoomAllotment(request):
         err_msg = 'Girls cannot reside in ' + hall_no
     else:
         print("hall no obtained : ", hall_no)
-        #saving the new allotment
-        p = hostel_allotment(hall_no=hall_no, year=year, gender=gender, number_students=num_students, remark=remarks, program=program)
-        p.save()
 
         #changing the capacity
         capacity = hostel_capacity.objects.get(name=hall_no)
         if (int(capacity.current_capacity) - int(num_students)) >= 0:
+            # saving the new allotment
+            p = hostel_allotment(hall_no=hall_no, year=year, gender=gender, number_students=num_students,
+                                 remark=remarks, program=program)
+            p.save()
             capacity.current_capacity = int(capacity.current_capacity) - int(num_students)
             capacity.save()
             success_msg = 'Hall Alloted Successfully'
@@ -295,11 +303,13 @@ def clubRejection(request):
         Club_info_object=Club_info.objects.get(pk=id_r[i])
         Club_info_object.status='rejected'
         Club_info_object.save()
-    return HttpResponseRedirect('/office/officeOfDeanStudents')
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html',getUniversalContext(request, page=5))
 
 
 @login_required
 def sessionApproval(request):
+    err_msg = 'none'
+    success_msg = 'none'
     id_r = request.POST.getlist('check')
     for i in range(len(id_r)):
         Session_info_object= Session_info.objects.get(pk=id_r[i])
@@ -307,19 +317,23 @@ def sessionApproval(request):
         date = Session_info_object.date
         Session_info_object.status='confirmed'
         Session_info_object.save()
+    success_msg = "Club Session approved succesfully"
 
-    return HttpResponseRedirect('/office/officeOfDeanStudents')
-    return render(request, "officeModule/officeModule / officeOfDeanStudents / sessinoRoomAllotment.html", context)
-
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html',getUniversalContext(request, page=11, success_msg=success_msg))
 
 @login_required
 def sessionRejection(request):
+    err_msg = 'none'
+    success_msg = 'none'
     id_r=request.POST.getlist('check')
     for i in range(len(id_r)):
         Session_info_object=Session_info.objects.get(pk=id_r[i]);
         Session_info_object.status='rejected'
         Session_info_object.save()
-    return HttpResponseRedirect('/office/officeOfDeanStudents')
+    success_msg= "Club Session rejected successfully"
+
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html',getUniversalContext(request, page=11, success_msg=success_msg))
+
 """
     View for allotment of budget initiated by the Dean_S
     Inputs:- Unique id for club, budget object

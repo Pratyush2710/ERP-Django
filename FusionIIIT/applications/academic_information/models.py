@@ -81,7 +81,7 @@ class Meeting(models.Model):
     date = models.DateField()
     time = models.CharField(max_length=20)
     agenda = models.TextField()
-    minutes_file = models.CharField(max_length=40)
+    minutes_file = models.FileField(upload_to="")
 
     class Meta:
         db_table = 'Meeting'

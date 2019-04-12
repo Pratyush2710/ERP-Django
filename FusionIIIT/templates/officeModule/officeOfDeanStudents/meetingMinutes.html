@@ -1,5 +1,25 @@
 {% block form6 %}
 <h3>Meeting Minutes</h3>
+
+
+    {% if success_msg != 'none' %}
+    <div class="ui success message">
+        <i class="close icon"></i>
+        <div class="header">
+          {{ success_msg }}
+        </div>
+    </div>
+    {% endif %}
+    {% if err_msg != 'none' %}
+    <div class="ui error message">
+            <i class="close icon"></i>
+            <div class="header">
+              There were some errors with your submission
+            </div>
+            <p>{{ err_msg }}</p>
+    </div>
+    {% endif %}
+
 <div class="ui pointing secondary menu">
                                 <a class=" active item" data-tab="pending">
                                 Pending
@@ -13,13 +33,12 @@
                      <table class="ui very basic  celled table">
                          <thead>
                                             <tr>
-                                                <th>Agenda</th>
-                                                <th>Time</th>
-                                                <th>Venue</th>
-                                                <th>Date</th>
-                                                <th>File upload</th>
-                                                <th>YES</th>
-                                                <th></th>
+                                                <th class="two wide coloumn">Agenda</th>
+                                                <th class="two wide coloumn">Time</th>
+                                                <th class="two wide coloumn">Venue</th>
+                                                <th class="two wide coloumn">Date</th>
+                                                <th class="two wide coloumn">File upload</th>
+                                                <th class="two wide coloumn">YES</th>
                                             </tr>
                         </thead>
                         <tr>
@@ -48,11 +67,11 @@
                     <table class="ui very basic  celled table">
                         <thead>
                                             <tr>
-                                                <th>Agenda</th>
-                                                <th>Time</th>
-                                                <th>Date</th>
-                                                 <th>Venue</th>
-                                                 <th>File</th>
+                                                <th class="two wide coloumn">Agenda</th>
+                                                <th class="two wide coloumn">Time</th>
+                                                <th class="two wide coloumn">Date</th>
+                                                <th class="two wide coloumn">Venue</th>
+                                                <th class="two wide coloumn">File</th>
                                             </tr>
                         </thead>
                         <tr>

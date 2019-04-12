@@ -14,6 +14,25 @@
     </div>
 
     <div class="ui active  tab segment" data-tab="club">
+
+    {% if success_msg != 'none' %}
+    <div class="ui success message">
+        <i class="close icon"></i>
+        <div class="header">
+          {{ success_msg }}
+        </div>
+    </div>
+    {% endif %}
+    {% if err_msg != 'none' %}
+    <div class="ui error message">
+            <i class="close icon"></i>
+            <div class="header">
+              There were some errors with your submission
+            </div>
+            <p>{{ err_msg }}</p>
+    </div>
+    {% endif %}
+
     <table class="ui very basic celled table">
     	<thead>
 		<tr>
