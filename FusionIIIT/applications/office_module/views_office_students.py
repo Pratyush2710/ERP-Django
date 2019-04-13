@@ -249,6 +249,8 @@ def deleteAllHostelRoomAllotment(request):
 
 @login_required
 def budgetApproval(request):
+    err_msg = 'none'
+    success_msg = 'none'
     id_r=request.POST.getlist('check')
     remark=request.POST.getlist('remark')
     for i in range(len(id_r)):
@@ -263,11 +265,14 @@ def budgetApproval(request):
         Club_info_object.avail_budget = (availBudget - int(budget))
         Club_budget_object.save()
         Club_info_object.save()
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=2))
+        success_msg = "Club Budget approved succesfully"
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=2, success_msg=success_msg))
 
 
 @login_required
 def budgetRejection(request):
+    err_msg = 'none'
+    success_msg = 'none'
     id_r=request.POST.getlist('check')
     remark=request.POST.getlist('remark')
     for i in range(len(id_r)):
@@ -275,7 +280,8 @@ def budgetRejection(request):
         Club_budget_object.status='rejected'
         Club_budget_object.remarks=request.POST.get(id_r[i])
         Club_budget_object.save()
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=2))
+        err_msg = "Club Budget rejected successfully"
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=2, err_msg=err_msg))
 
 
 """
@@ -288,6 +294,8 @@ def budgetRejection(request):
 
 @login_required
 def clubApproval(request):
+    err_msg = 'none'
+    success_msg = 'none'
     id_r = request.POST.getlist('check')
     """changing club approval status from open to confirmed and added to the field"""
     for i in range(len(id_r)):
@@ -302,7 +310,8 @@ def clubApproval(request):
         HoldsDesig.save()
         HoldsDesig = HoldsDesignation( user= co_co, working= co_co, designation=designation1)
         HoldsDesig.save()
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=5))
+        success_msg = "Club Approved successfully"
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=5,success_msg=success_msg))
 
 
 """
@@ -315,12 +324,15 @@ def clubApproval(request):
 
 @login_required
 def clubRejection(request):
+    err_msg = 'none'
+    success_msg = 'none'
     id_r=request.POST.getlist('check')
     for i in range(len(id_r)):
         Club_info_object=Club_info.objects.get(pk=id_r[i])
         Club_info_object.status='rejected'
         Club_info_object.save()
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html',getUniversalContext(request, page=5))
+        err_msg = "Club Rejected successfully"
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html',getUniversalContext(request, page=5, err_msg=err_msg))
 
 
 @login_required
