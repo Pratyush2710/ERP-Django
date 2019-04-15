@@ -64,6 +64,9 @@
                     <th class="four wide column">
                         Amount
                     </th>
+                    <th class = "four wide column">
+                        Available Budget
+                    </th>
                     <th class="four wide column">
                         Remark
                     </th>
@@ -79,6 +82,7 @@
 
                     <!-- Fetch all the club details whose allotment status is open(not confirmed or declined)  -->
 
+
                     {% for i in budget_app %}
                     <td><input type="checkbox" name="check" value="{{i.id}}"></td>
                     <td > {{ i.club }}</td>
@@ -89,6 +93,13 @@
                             <i class="large attach black icon"></i>
                         </a></td>
                     <td>{{i.budget_amt}}</td>
+
+                    {% for j in budgets %}
+                    {% if j.club_name == i.club_id %}
+                    <td>{{ j.avail_budget }}</td>
+                    {% endif %}
+                    {% endfor %}
+
                     <td><textarea rows="2" name="{{i.id}}"></textarea></td>
                     <!--<td> <div class="ui compact icon button" onclick="view_budget('{{ i.pk }}')">
                             <i class="expand icon"></i>

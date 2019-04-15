@@ -70,8 +70,8 @@
     </table>
        <br>
 
-            <button class="ui primary right floated button" type="submit" name="submit" id="approve" formaction="session_approval">Approve Selected</button>
-            <button class="ui red right floated button" type="submit" name="submit" id="reject" formaction="session_rejection">Reject Selected</button>
+            <button class="ui primary right floated button" type="submit" name="submit" id="approve" formaction="session_approval" {% if not session_requests_new %} disabled {% endif %}>Approve Selected</button>
+            <button class="ui red right floated button" type="submit" name="submit" id="reject" formaction="session_rejection"  {% if not session_requests_new %} disabled {% endif %}>Reject Selected</button>
 		</form>
 
             <br>

@@ -1,5 +1,5 @@
 {% include 'officeModule/officeOfDeanStudents/view_meeting_modal.html' %}
-<table class="ui very basic  celled table" id="view_meeting">
+<table class="ui very basic celled table" id="view_meeting">
                         <thead>
                                             <tr>
                                                 <th>Agenda</th>
@@ -7,7 +7,7 @@
                                                 <th>Date</th>
                                                  <th>Venue</th>
                                                  <th>File</th>
-                                                 <th> </th>
+                                                 <!--<th> </th>-->
                                             </tr>
                         </thead>
                         
@@ -20,9 +20,9 @@
                                 <td><a class="ui inverted circular icon button" style="margin: auto;"  href="/media/{{  details.minutes_file }}" target="blank">
                             <i class="large attach black icon"></i>
                         </a> </td>
-                        <td> <button class="ui compact icon button" onclick="modals('{{ details.pk }}')">
+                        <!--<td> <button class="ui compact icon button" onclick="modals('{{ details.pk }}')">
                             <i class="expand icon"></i>
-                                </button></td>
+                                </button></td>-->
                         </tr>
                         {% endfor %}
                        

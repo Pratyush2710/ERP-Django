@@ -258,11 +258,9 @@ def budgetApproval(request):
         Club_budget_object.status = 'confirmed'
         Club_budget_object.remarks = request.POST.get(id_r[i])
         budget = request.POST.get('amount ' + id_r[i])
-        spentBudget = Club_budget_object.club.spent_budget
-        availBudget = Club_budget_object.club.avail_budget
         Club_info_object = Club_info.objects.get(club_name = Club_budget_object.club.club_name )
-        Club_info_object.spent_budget = (spentBudget + int(budget))
-        Club_info_object.avail_budget = (availBudget - int(budget))
+        Club_info_object.spent_budget = int(budget)- Club_info_object.spent_budget  # (spentBudget + int(budget))
+        Club_info_object.avail_budget = Club_info_object.avail_budget - int(budget)  # (availBudget - int(budget))
         Club_budget_object.save()
         Club_info_object.save()
         success_msg = "Club Budget approved succesfully"
@@ -395,7 +393,7 @@ def budgetAllotEdit(request):
     budget= request.POST.get('budget')
     Club_info_object= Club_info.objects.get(pk=id_r)
     Club_info_object.alloted_budget = int(budget)
-    Club_info_object.avail_budget = int(budget)
-    Club_info_object.spent_budget = int(0)
+    Club_info_object.avail_budget = int(budget) - Club_info_object.spent_budget
+    # Club_info_object.spent_budget = int(0)
     Club_info_object.save()
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=10))
