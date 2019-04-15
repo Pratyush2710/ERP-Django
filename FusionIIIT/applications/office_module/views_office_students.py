@@ -254,17 +254,22 @@ def budgetApproval(request):
     id_r=request.POST.getlist('check')
     remark=request.POST.getlist('remark')
     for i in range(len(id_r)):
+
         Club_budget_object = Club_budget.objects.get(id=id_r[i])
+        avail_budget = Club_info.objects.get(club_name=Club_budget_object.club_id)
         Club_budget_object.status = 'confirmed'
         Club_budget_object.remarks = request.POST.get(id_r[i])
         budget = request.POST.get('amount ' + id_r[i])
-        Club_info_object = Club_info.objects.get(club_name = Club_budget_object.club.club_name )
-        Club_info_object.spent_budget = int(budget)- Club_info_object.spent_budget  # (spentBudget + int(budget))
-        Club_info_object.avail_budget = Club_info_object.avail_budget - int(budget)  # (availBudget - int(budget))
-        Club_budget_object.save()
-        Club_info_object.save()
-        success_msg = "Club Budget approved succesfully"
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=2, success_msg=success_msg))
+        if int(budget) > avail_budget.avail_budget:
+            err_msg = "Insufficient fund. Ask suprintendent to update total allotment"
+        else:
+            Club_info_object = Club_info.objects.get(club_name = Club_budget_object.club.club_name )
+            Club_info_object.spent_budget = int(budget)- Club_info_object.spent_budget  # (spentBudget + int(budget))
+            Club_info_object.avail_budget = Club_info_object.avail_budget - int(budget)  # (availBudget - int(budget))
+            Club_budget_object.save()
+            Club_info_object.save()
+            success_msg = "Club Budget approved succesfully"
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=2, success_msg=success_msg,err_msg=err_msg))
 
 
 @login_required
@@ -278,8 +283,8 @@ def budgetRejection(request):
         Club_budget_object.status='rejected'
         Club_budget_object.remarks=request.POST.get(id_r[i])
         Club_budget_object.save()
-        err_msg = "Club Budget rejected successfully"
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=2, err_msg=err_msg))
+        success_msg = "Club Budget rejected successfully"
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=2, success_msg=success_msg))
 
 
 """

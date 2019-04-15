@@ -97,6 +97,7 @@
                     {% for j in budgets %}
                     {% if j.club_name == i.club_id %}
                     <td>{{ j.avail_budget }}</td>
+                    <input type="text" name="avail_budget" value="{{j.avail_budget}}" hidden="true">
                     {% endif %}
                     {% endfor %}
 
