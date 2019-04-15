@@ -15,7 +15,7 @@
 
     <div class="ui active  tab segment" data-tab="club">
 
-    {% if success_msg != 'none' %}
+    {% if success_msg != 'none'  and page == 11 %}
     <div class="ui success message">
         <i class="close icon"></i>
         <div class="header">
@@ -23,7 +23,7 @@
         </div>
     </div>
     {% endif %}
-    {% if err_msg != 'none' %}
+    {% if err_msg != 'none'  and page == 11  %}
     <div class="ui error message">
             <i class="close icon"></i>
             <div class="header">

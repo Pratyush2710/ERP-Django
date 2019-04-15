@@ -2,7 +2,7 @@
 <h3>Meeting Minutes</h3>
 
 
-    {% if success_msg != 'none' %}
+    {% if success_msg != 'none'  and page == 6 %}
     <div class="ui success message">
         <i class="close icon"></i>
         <div class="header">
@@ -10,7 +10,7 @@
         </div>
     </div>
     {% endif %}
-    {% if err_msg != 'none' %}
+    {% if err_msg != 'none'  and page == 6 %}
     <div class="ui error message">
             <i class="close icon"></i>
             <div class="header">
@@ -42,17 +42,18 @@
                                             </tr>
                         </thead>
                         <tr>
-                                <form class="ui  form" action="meeting_Minutes/" method="post" enctype="multipart/form-data">
-                                    {% csrf_token %}
+
                                     {% for details in meetingMinutes%}
-                                <td >{{  details.agenda }}</td>
+                            <form class="ui  form" action="meeting_Minutes/" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                <td>{{  details.agenda }}</td>
                                 <td >{{  details.time }}</td>
                                 <td >{{  details.venue }}</td>
                                 <td >{{  details.date }}
                                     <input type="text" name="id" hidden="true" value="{{details.pk}}">
                                 </td>
-                                    <td ><div class="ui mini input"><input type="file" name="minutes_file" accept=".pdf, .doc, .docx"  placeholder="meeting minutes"></div></td>
-                                <td > <button class="mini ui button positive" type="submit">Submit</button></td>
+                                    <td ><div class="ui mini input"><input type="file" name="minutes_file" accept=".pdf, .doc, .docx"  placeholder="meeting minutes" required></div></td>
+                                <td > <button class="mini ui button" type="submit">Submit</button></td>
                             </form>
                         </tr>
                                 {% endfor %}

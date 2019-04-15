@@ -40,7 +40,7 @@ def getUniversalContext(request, page, err_msg = 'none', success_msg = 'none'):
     club = Club_info.objects.all().exclude(status='open')
     budgets = Club_info.objects.all().filter(status='confirmed')
     approved_budgets = Club_budget.objects.all().filter(status='confirmed')
-    budget_allotment = Club_info.objects.all().filter(status='confirmed')
+    budget_allotment = Club_info.objects.all().filter(alloted_budget=0, status="confirmed")
     budget_alloted = Club_info.objects.all().exclude(alloted_budget=0)
     designation = HoldsDesignation.objects.all().filter(working=request.user)
     CAPACITY = hostel_capacity.objects.all()
@@ -159,7 +159,7 @@ def meetingMinutes(request):
     success_msg = 'none'
     file=request.FILES['minutes_file']
     id=request.POST.get('id')
-    meeting_object=Meeting.objects.get(pk=id)
+    meeting_object=Meeting.objects.get(pk=int(id))
     meeting_object.minutes_file=file
     meeting_object.save()
     success_msg="MOM uploaded successfully"
