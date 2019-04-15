@@ -38,6 +38,7 @@ urlpatterns = [
     url(r'^finance/', include('applications.finance_accounts.urls')),
     url(r'^gymkhana/', include('applications.gymkhana.urls')),
     url(r'^library/', include('applications.library.urls')),
+    url(r'^office/', include('applications.office_module.urls')),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^ocms/', include('applications.online_cms.urls')),
     url(r'^login/', auth_views.login, name='login'),

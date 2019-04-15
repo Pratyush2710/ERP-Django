@@ -100,3 +100,14 @@ def complaint_system_notif(sender, recipient, type):
     verb = ''
 
     notify.send(sender=sender, recipient=recipient, url=url, module=module, verb=verb)
+
+def office_module_DeanS_notif(sender, recipient, type):
+    url='office:officeOfDeanStudents'
+    module='Office Module'
+    sender = sender
+    recipient = recipient
+    verb = ''
+
+    if type == 'hostel_alloted':
+        verb = "Hostel has been alloted successfully"
+    notify.send(sender=sender, recipient=recipient, url=url, module=module, verb=verb)
