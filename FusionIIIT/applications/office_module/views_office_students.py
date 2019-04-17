@@ -28,7 +28,7 @@ import datetime,time
 """
 
 
-def getUniversalContext(request, page, err_msg = 'none', success_msg = 'none'):
+def getUniversalContext(request, page, err_msg = 'none', success_msg = 'none', flag_dean_s=False, flag_superintendent=False ):
     budget_app = Club_budget.objects.all().filter(status='open')
     past_budget = Club_budget.objects.all().exclude(status='open')
     minutes = Meeting.objects.all().filter(minutes_file="")
@@ -80,7 +80,9 @@ def getUniversalContext(request, page, err_msg = 'none', success_msg = 'none'):
                'all_designation': roll_,
                'page': page,
                'err_msg': err_msg,
-               'success_msg': success_msg
+               'success_msg': success_msg,
+               'flag_dean_s': flag_dean_s,
+               'flag_superintendent': flag_superintendent,
                }
     return context
 
@@ -96,11 +98,15 @@ def officeOfDeanStudents(request):
         name_ = get_object_or_404(Designation, id=i)
         roll_.append(str(name_.name))
     page=0
+    flag_dean_s = False
+    flag_superintendent = False
     if 'Dean_s' in roll_:
         page = 0
+        flag_dean_s = True
     elif 'Junior Superintendent' in roll_:
         page = 6
-    return render(request, "officeModule/officeOfDeanStudents/officeOfDeanStudents.html", getUniversalContext(request, page=page))
+        flag_superintendent = True
+    return render(request, "officeModule/officeOfDeanStudents/officeOfDeanStudents.html", getUniversalContext(request, page=page, flag_dean_s=flag_dean_s, flag_superintendent=flag_superintendent))
 
 
 """
