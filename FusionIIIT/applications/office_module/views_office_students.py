@@ -8,6 +8,8 @@ from applications.globals.models import *
 import json
 from django.contrib.auth.decorators import login_required
 import datetime,time
+from notification.views import office_module_DeanS_notif
+from django.views.decorators.csrf import csrf_protect
 
 """
     Default view for Dean Students Module
@@ -169,6 +171,7 @@ def meetingMinutes(request):
     meeting_object.minutes_file=file
     meeting_object.save()
     success_msg="MOM uploaded successfully"
+    office_module_DeanS_notif(request.user, request.user, 'MOM_submitted')
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=6, success_msg=success_msg))
 
 
@@ -212,6 +215,7 @@ def hostelRoomAllotment(request):
             capacity.current_capacity = int(capacity.current_capacity) - int(num_students)
             capacity.save()
             success_msg = 'Hall Alloted Successfully'
+            office_module_DeanS_notif(request.user, request.user, 'hostel_alloted')
         else:
             err_msg = 'Hostel Limit Exceeded!'
     print("error msg : " + err_msg)
@@ -275,6 +279,7 @@ def budgetApproval(request):
             Club_budget_object.save()
             Club_info_object.save()
             success_msg = "Club Budget approved succesfully"
+            office_module_DeanS_notif(request.user, request.user, 'budget_approved')
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=2, success_msg=success_msg,err_msg=err_msg))
 
 
@@ -290,6 +295,7 @@ def budgetRejection(request):
         Club_budget_object.remarks=request.POST.get(id_r[i])
         Club_budget_object.save()
         success_msg = "Club Budget rejected successfully"
+        office_module_DeanS_notif(request.user, request.user, 'budget_rejected')
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=2, success_msg=success_msg))
 
 
@@ -320,6 +326,7 @@ def clubApproval(request):
         HoldsDesig = HoldsDesignation( user= co_co, working= co_co, designation=designation1)
         HoldsDesig.save()
         success_msg = "Club Approved successfully"
+        office_module_DeanS_notif(request.user, request.user, 'club_approved')
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=5,success_msg=success_msg))
 
 
@@ -341,6 +348,7 @@ def clubRejection(request):
         Club_info_object.status='rejected'
         Club_info_object.save()
         err_msg = "Club Rejected successfully"
+        office_module_DeanS_notif(request.user, request.user, 'club_rejected')
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html',getUniversalContext(request, page=5, err_msg=err_msg))
 
 
@@ -356,7 +364,7 @@ def sessionApproval(request):
         Session_info_object.status='confirmed'
         Session_info_object.save()
     success_msg = "Club Session approved succesfully"
-
+    office_module_DeanS_notif(request.user, request.user, 'session_approved')
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html',getUniversalContext(request, page=11, success_msg=success_msg))
 
 @login_required
@@ -369,6 +377,7 @@ def sessionRejection(request):
         Session_info_object.status='rejected'
         Session_info_object.save()
     success_msg= "Club Session rejected successfully"
+    office_module_DeanS_notif(request.user, request.user, 'session_rejected')
 
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html',getUniversalContext(request, page=11, success_msg=success_msg))
 
@@ -388,6 +397,7 @@ def budgetAllot(request):
     Club_info_object.alloted_budget=int(budget)
     Club_info_object.avail_budget= int(budget)
     Club_info_object.save()
+    office_module_DeanS_notif(request.user, request.user, 'budget_alloted')
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=10))
 
 
