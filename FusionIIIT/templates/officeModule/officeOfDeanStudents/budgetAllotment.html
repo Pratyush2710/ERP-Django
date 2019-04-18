@@ -4,25 +4,6 @@
 <h3>Club Budget Allotment</h3>
 
 
-    {% if success_msg != 'none' and page == 10 %}
-    <div class="ui message success">
-        <i class="close icon"></i>
-        <div class="header">
-          {{ success_msg }}
-        </div>
-    </div>
-    {% endif %}
-    {% if err_msg != 'none' and page == 10 %}
-    <div class="ui message error">
-            <i class="close icon"></i>
-            <div class="header">
-              There were some errors with your submission
-            </div>
-            <p>{{ err_msg }}</p>
-    </div>
-    {% endif %}
-
-
 <div class="ui pointing secondary menu">
         <a class=" active item" data-tab="allot_budget">
             New Allotments

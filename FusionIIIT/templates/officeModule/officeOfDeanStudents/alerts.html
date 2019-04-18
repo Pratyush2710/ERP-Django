@@ -104,7 +104,7 @@
             <div class="extra content">
                 <form method="post" action="">
                     {% csrf_token %}
-                    <input type="checkbox" hidden="true" name="check" value="{{i.pk}}" checked>
+                    <input type="checkbox" name="check" value="{{i.pk}}" checked>
 
                     <button tiny class="ui primary right floated button" type="submit" name="submit" id="approve" formaction="session_approval" {% if not session_requests_new %} disabled {% endif %}>Approve</button>
                     <button tiny class="ui red right floated button" type="submit" name="submit" id="reject" formaction="session_rejection"  {% if not session_requests_new %} disabled {% endif %}>Reject</button>
