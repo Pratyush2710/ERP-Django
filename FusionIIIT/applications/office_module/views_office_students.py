@@ -32,7 +32,8 @@ from django.views.decorators.csrf import csrf_protect
                             |  budgets         |  Clubs which are approved
     5.    HoldsDesignation  |  designation     |  Designation of the active user
 """
-
+Dean = HoldsDesignation.objects.get(designation=Designation.objects.filter(name='Dean_s')).working
+Superintendent = HoldsDesignation.objects.get(designation=Designation.objects.filter(name='Junior Superintendent')).working
 
 def getUniversalContext(request, page, err_msg = 'none', success_msg = 'none', flag_dean_s=False, flag_superintendent=False ):
     budget_app = Club_budget.objects.all().filter(status='open')
@@ -157,7 +158,8 @@ def holdingMeeting(request):
             p = Meeting(venue=Venue, date=date, time=Time, agenda=Agenda)
             p.save()
             success_msg="Meeting created successfully. Waiting for Suprintendent for the MOM"
-
+            office_module_DeanS_notif(request.user, Dean, 'meeting_booked')
+            office_module_DeanS_notif(request.user, Superintendent, 'meeting_booked')
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=1, success_msg=success_msg, err_msg=err_msg))
 
 
@@ -182,6 +184,9 @@ def meetingMinutes(request):
         meeting_object.minutes_file=file
         meeting_object.save()
         success_msg="MOM uploaded successfully"
+        office_module_DeanS_notif(request.user, Dean, 'MOM_submitted')
+        office_module_DeanS_notif(request.user, Superintendent, 'MOM_submitted')
+        # office_module_DeanS_notif(request.user, 'gymkhana', 'meeting_booked')
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=6, success_msg=success_msg, err_msg=err_msg))
 
 """
@@ -232,7 +237,7 @@ def hostelRoomAllotment(request):
             capacity.current_capacity = int(capacity.current_capacity) - int(num_students)
             capacity.save()
             success_msg = 'Hall Alloted Successfully'
-            office_module_DeanS_notif(request.user, request.user, 'hostel_alloted')
+            office_module_DeanS_notif(request.user, Superintendent, 'hostel_alloted')
         else:
             err_msg = 'Hostel Limit Exceeded!'
     print("error msg : " + err_msg)
@@ -248,8 +253,11 @@ def hostelRoomAllotment(request):
 @login_required
 def deleteHostelRoomAllotment(request):
 
+<<<<<<< HEAD
     err_msg = 'none'
     success_msg = 'none'
+=======
+>>>>>>> 1d66a0d13bfa07d32ea62dfcbca7bc42ecaa4edb
     id = request.POST.get('delete')
     print("Delete record: ", id)
     if id == None:
@@ -305,6 +313,8 @@ def budgetApproval(request):
         budget = request.POST.get('amount ' + id_r[i])
         if int(budget) > avail_budget.avail_budget:
             err_msg = "Insufficient fund. Ask suprintendent to update total allotment"
+            # office_module_DeanS_notif(request.user, Co, 'budget_rejected')
+
         else:
             Club_info_object = Club_info.objects.get(club_name = Club_budget_object.club.club_name )
             Club_info_object.spent_budget = int(budget)- Club_info_object.spent_budget  # (spentBudget + int(budget))
@@ -313,6 +323,9 @@ def budgetApproval(request):
             Club_info_object.save()
             success_msg = "Club Budget approved succesfully"
             office_module_DeanS_notif(request.user, request.user, 'budget_approved')
+            office_module_DeanS_notif(request.user, Dean, 'budget_approved')
+            office_module_DeanS_notif(request.user, Superintendent, 'budget_approved')
+            # office_module_DeanS_notif(request.user, Co, 'budget_approved')
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=2, success_msg=success_msg,err_msg=err_msg))
 
 
@@ -329,6 +342,7 @@ def budgetRejection(request):
         Club_budget_object.save()
         success_msg = "Club Budget rejected successfully"
         office_module_DeanS_notif(request.user, request.user, 'budget_rejected')
+        # office_module_DeanS_notif(request.user, Co, 'budget_rejected')
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=2, success_msg=success_msg))
 
 
@@ -360,6 +374,8 @@ def clubApproval(request):
         HoldsDesig.save()
         success_msg = "Club Approved successfully"
         office_module_DeanS_notif(request.user, request.user, 'club_approved')
+        office_module_DeanS_notif(request.user, Dean, 'club_approved')
+        # office_module_DeanS_notif(request.user, 'gymkhana', 'club_approved')
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=5,success_msg=success_msg))
 
 
@@ -382,6 +398,7 @@ def clubRejection(request):
         Club_info_object.save()
         err_msg = "Club Rejected successfully"
         office_module_DeanS_notif(request.user, request.user, 'club_rejected')
+        # office_module_DeanS_notif(request.user, 'gymkhana', 'club_rejected')
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html',getUniversalContext(request, page=5, err_msg=err_msg))
 
 
@@ -398,6 +415,7 @@ def sessionApproval(request):
         Session_info_object.save()
     success_msg = "Club Session approved succesfully"
     office_module_DeanS_notif(request.user, request.user, 'session_approved')
+
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html',getUniversalContext(request, page=11, success_msg=success_msg))
 
 @login_required
@@ -411,6 +429,7 @@ def sessionRejection(request):
         Session_info_object.save()
     success_msg= "Club Session rejected successfully"
     office_module_DeanS_notif(request.user, request.user, 'session_rejected')
+    # office_module_DeanS_notif(request.user, 'gymkhana', 'session_rejected')
 
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html',getUniversalContext(request, page=11, success_msg=success_msg))
 

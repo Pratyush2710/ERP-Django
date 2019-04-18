@@ -34,6 +34,7 @@
                     {% endfor %}
                     <input type="checkbox" hidden="true" name="check" value="{{i.id}}" checked>
                     <textarea rows="2" name="{{i.id}}" placeholder="Remarks"></textarea>
+                    </br>
                     <button class="ui tiny primary right floated button" type="submit" name="submit" id="approve" value="{{i.id}}" formaction="budget_approval" {% if not budget_app %} disabled {% endif %}>Approve</button>
                     <button class="ui tiny red right floated button" type="submit" name="submit" id="reject" value="{{i.id}}" formaction="budget_rejection" {% if not budget_app %} disabled {% endif %} >Reject</button>
 
