@@ -167,7 +167,6 @@ def holdingMeeting(request):
 def meetingMinutes(request):
     err_msg = 'none'
     success_msg = 'none'
-<<<<<<< HEAD
     if 'minutes_file' not in  request.FILES:
         err_msg="none"
     else:
@@ -178,16 +177,6 @@ def meetingMinutes(request):
         meeting_object.save()
         success_msg="MOM uploaded successfully"
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=6, success_msg=success_msg, err_msg=err_msg))
-=======
-    file=request.FILES['minutes_file']
-    id=request.POST.get('id')
-    meeting_object=Meeting.objects.get(pk=int(id))
-    meeting_object.minutes_file=file
-    meeting_object.save()
-    success_msg="MOM uploaded successfully"
-    office_module_DeanS_notif(request.user, request.user, 'MOM_submitted')
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=6, success_msg=success_msg))
->>>>>>> 23aa6164c9305e2b5f05df4be36234b8fede9f76
 
 
 @login_required
@@ -410,7 +399,6 @@ def budgetAllot(request):
     success_msg = 'none'
     id_r=request.POST.get('id')
     budget= request.POST.get('budget')
-<<<<<<< HEAD
     if id_r== None:
         err_msg= 'none'
     else:
@@ -420,14 +408,6 @@ def budgetAllot(request):
         Club_info_object.save()
         success_msg = "Budget alloted successfully"
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=10, success_msg=success_msg))
-=======
-    Club_info_object= Club_info.objects.get(pk=id_r)
-    Club_info_object.alloted_budget=int(budget)
-    Club_info_object.avail_budget= int(budget)
-    Club_info_object.save()
-    office_module_DeanS_notif(request.user, request.user, 'budget_alloted')
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=10))
->>>>>>> 23aa6164c9305e2b5f05df4be36234b8fede9f76
 
 
 """
