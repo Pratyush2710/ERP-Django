@@ -12,7 +12,11 @@ from notification.views import office_module_DeanS_notif
 from django.views.decorators.csrf import csrf_protect
 
 """
-    Default view for Dean Students Module
+    Universal context :
+    Function to create and return context from every view
+    Specifically used for page numbering , error and success message reporting, and static data passing.
+
+
     All models are Loaded from respective Tables in Database and passed to default template
     List of Concerned Models :
     S.no. Model             |  Load Variables  |  Usage
@@ -88,7 +92,9 @@ def getUniversalContext(request, page, err_msg = 'none', success_msg = 'none', f
                }
     return context
 
-
+"""
+    Default view for Dean Students Module
+"""
 @login_required
 def officeOfDeanStudents(request):
 
@@ -178,6 +184,12 @@ def meetingMinutes(request):
         success_msg="MOM uploaded successfully"
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=6, success_msg=success_msg, err_msg=err_msg))
 
+"""
+    View for validating and saving new hostel allotment
+    Inputs:- various fields of the allotment form
+    Output :- validate and save record in table and give success message       
+    records are saved in table hostel_allotment 
+"""
 
 @login_required
 def hostelRoomAllotment(request):
@@ -193,7 +205,7 @@ def hostelRoomAllotment(request):
 
     if hall_no == None:
         err_msg = 'none'
-    if hall_no == '':
+    elif hall_no == '':
         err_msg = 'Hall No. is required'
     elif year == '':
         err_msg = 'Year is required'
@@ -226,27 +238,43 @@ def hostelRoomAllotment(request):
     print("error msg : " + err_msg)
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=7,err_msg=err_msg,success_msg=success_msg))
 
+"""
+    View for deleting selected hostel allotment
+    Inputs:- Id of selected allotment records
+    Output :- delete input record       
+    record is deleted from table hostel_allotment 
+"""
 
 @login_required
 def deleteHostelRoomAllotment(request):
-    
+
+    err_msg = 'none'
+    success_msg = 'none'
     id = request.POST.get('delete')
     print("Delete record: ", id)
-    hall_no = hostel_allotment.objects.get(id=id).hall_no
-    num_students = hostel_allotment.objects.get(id=id).number_students
-
-    capacity = hostel_capacity.objects.get(name=hall_no)
-    if (int(capacity.current_capacity) + int(num_students)) <= capacity.total_capacity:
-        capacity.current_capacity = int(capacity.current_capacity) + int(num_students)
+    if id == None:
+        err_msg = 'none'
     else:
-        capacity.current_capacity = capacity.total_capacity
-    capacity.save()
+        hall_no = hostel_allotment.objects.get(id=id).hall_no
+        num_students = hostel_allotment.objects.get(id=id).number_students
 
-    hostel_allotment.objects.get(id=id).delete()
-    success_msg = 'Hostel Allotment Deleted Successfully'
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=7, success_msg=success_msg))
+        capacity = hostel_capacity.objects.get(name=hall_no)
+        if (int(capacity.current_capacity) + int(num_students)) <= capacity.total_capacity:
+            capacity.current_capacity = int(capacity.current_capacity) + int(num_students)
+        else:
+            capacity.current_capacity = capacity.total_capacity
+        capacity.save()
 
+        hostel_allotment.objects.get(id=id).delete()
+        success_msg = 'Hostel Allotment Deleted Successfully'
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=7, success_msg=success_msg, err_msg=err_msg))
 
+"""
+    View for deleting all previous hostel allotment at once
+    Inputs:- All previously allotted records
+    Output :- delete input records       
+    records are deleted in table hostel_allotment 
+"""
 @login_required
 def deleteAllHostelRoomAllotment(request):
     #deleting all allotments
