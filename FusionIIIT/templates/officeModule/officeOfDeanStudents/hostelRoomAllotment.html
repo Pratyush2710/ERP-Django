@@ -110,7 +110,8 @@
 <div class="ui tab segment" data-tab="Allotment">
     <form action="deleteAllHostelRoomAllotment" method="post">
                     {% csrf_token %}
-                <button class="ui button" type="submit" name="delete"> Delete All </button>
+                <button class="ui button" type="submit" name="delete"><a onclick="return confirm('Are you sure you want to delete this?')">Delete All</a>
+ </button>
                 </form>
     <table class="ui very basic celled table" id="allotment_table">
         <thead>
@@ -146,6 +147,12 @@
 
 </div>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+<script>
+    <a class="confirm-delete" ...>Delete</a>
+$(document).on('click', '.confirm-delete', function(){
+    return confirm('Are you sure you want to delete this?');
+})
+</script>
 
 {% endblock hostelRoomAllotment%}
 <script type="text/javascript" src="{% static 'globals/js/datepicker.js' %}"></script>

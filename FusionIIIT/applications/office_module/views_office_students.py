@@ -255,15 +255,16 @@ def deleteHostelRoomAllotment(request):
 @login_required
 def deleteAllHostelRoomAllotment(request):
     #deleting all allotments
-    hostel_allotment.objects.all().delete()
+    if len(hostel_allotment.objects.all())>0:
+        hostel_allotment.objects.all().delete()
 
-    #resetting capacities to max
-    capacity = hostel_capacity.objects.all()
-    for item in capacity:
-        item.current_capacity = item.total_capacity
-        item.save()
+        #resetting capacities to max
+        capacity = hostel_capacity.objects.all()
+        for item in capacity:
+            item.current_capacity = item.total_capacity
+            item.save()
 
-    success_msg = 'All Allotments Deleted Successfully'
+        success_msg = 'All Allotments Deleted Successfully'
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=7, success_msg=success_msg))
 
 
