@@ -283,6 +283,8 @@ def deleteHostelRoomAllotment(request):
 """
 @login_required
 def deleteAllHostelRoomAllotment(request):
+
+    success_msg = 'none'
     #deleting all allotments
     if len(hostel_allotment.objects.all())>0:
         hostel_allotment.objects.all().delete()
@@ -293,7 +295,9 @@ def deleteAllHostelRoomAllotment(request):
             item.current_capacity = item.total_capacity
             item.save()
 
-    success_msg = 'All Allotments Deleted Successfully'
+        success_msg = 'All Allotments Deleted Successfully'
+    else:
+        success_msg = 'No records to delete'
     return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=7, success_msg=success_msg, flag_superintendent=True))
 
 
