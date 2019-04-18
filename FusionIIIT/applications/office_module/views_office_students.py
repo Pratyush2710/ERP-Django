@@ -253,11 +253,9 @@ def hostelRoomAllotment(request):
 @login_required
 def deleteHostelRoomAllotment(request):
 
-<<<<<<< HEAD
     err_msg = 'none'
     success_msg = 'none'
-=======
->>>>>>> 1d66a0d13bfa07d32ea62dfcbca7bc42ecaa4edb
+
     id = request.POST.get('delete')
     print("Delete record: ", id)
     if id == None:
