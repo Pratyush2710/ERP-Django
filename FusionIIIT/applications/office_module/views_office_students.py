@@ -184,14 +184,15 @@ def hostelRoomAllotment(request):
 
     err_msg = 'none'
     success_msg = 'none'
-    hall_no=request.POST.get('hall_no')
-    year=request.POST.get('year')
-    gender=request.POST.get('gender')
-    num_students=request.POST.get('num_students')
-    remarks=request.POST.get('remarks')
-    program=request.POST.get('program')
+    hall_no = request.POST.get('hall_no')
+    year = request.POST.get('year')
+    gender = request.POST.get('gender')
+    num_students = request.POST.get('num_students')
+    remarks = request.POST.get('remarks')
+    program = request.POST.get('program')
 
-    #if hall_no == '' or year == '' or gender == '' or num_students == '' or program
+    if hall_no == None:
+        err_msg = 'none'
     if hall_no == '':
         err_msg = 'Hall No. is required'
     elif year == '':
