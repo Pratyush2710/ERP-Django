@@ -138,6 +138,8 @@ def holdingMeeting(request):
         err_msg = 'Venue is required'
     elif Agenda == '':
         err_msg = 'Agenda is required'
+    elif date == None:
+        err_msg = 'none'
     else:
         curr = datetime.datetime.now().timestamp()
         given = datetime.datetime.strptime(date + " " + Time, '%Y-%m-%d %H:%M').timestamp()
@@ -165,14 +167,16 @@ def holdingMeeting(request):
 def meetingMinutes(request):
     err_msg = 'none'
     success_msg = 'none'
-    file=request.FILES['minutes_file']
-    id=request.POST.get('id')
-    meeting_object=Meeting.objects.get(pk=int(id))
-    meeting_object.minutes_file=file
-    meeting_object.save()
-    success_msg="MOM uploaded successfully"
-    office_module_DeanS_notif(request.user, request.user, 'MOM_submitted')
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=6, success_msg=success_msg))
+    if 'minutes_file' not in  request.FILES:
+        err_msg="none"
+    else:
+        file=request.FILES['minutes_file']
+        id=request.POST.get('id')
+        meeting_object=Meeting.objects.get(pk=int(id))
+        meeting_object.minutes_file=file
+        meeting_object.save()
+        success_msg="MOM uploaded successfully"
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=6, success_msg=success_msg, err_msg=err_msg))
 
 
 @login_required
@@ -391,14 +395,19 @@ def sessionRejection(request):
 
 @login_required
 def budgetAllot(request):
+    err_msg = 'none'
+    success_msg = 'none'
     id_r=request.POST.get('id')
     budget= request.POST.get('budget')
-    Club_info_object= Club_info.objects.get(pk=id_r)
-    Club_info_object.alloted_budget=int(budget)
-    Club_info_object.avail_budget= int(budget)
-    Club_info_object.save()
-    office_module_DeanS_notif(request.user, request.user, 'budget_alloted')
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=10))
+    if id_r== None:
+        err_msg= 'none'
+    else:
+        Club_info_object = Club_info.objects.get(pk=id_r)
+        Club_info_object.alloted_budget=int(budget)
+        Club_info_object.avail_budget= int(budget)
+        Club_info_object.save()
+        success_msg = "Budget alloted successfully"
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=10, success_msg=success_msg))
 
 
 """
@@ -410,11 +419,21 @@ def budgetAllot(request):
 
 @login_required
 def budgetAllotEdit(request):
+    err_msg = 'none'
+    success_msg = 'none'
     id_r=request.POST.get('id')
     budget= request.POST.get('budget')
-    Club_info_object= Club_info.objects.get(pk=id_r)
-    Club_info_object.alloted_budget = int(budget)
-    Club_info_object.avail_budget = int(budget) - Club_info_object.spent_budget
-    # Club_info_object.spent_budget = int(0)
-    Club_info_object.save()
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=10))
+    if id_r == None:
+        err_msg = 'none'
+    else:
+        Club_info_object = Club_info.objects.get(pk=id_r)
+        if int(budget) < Club_info_object.spent_budget:
+            err_msg = "Cannot reduce below spent budget"
+        else:
+            Club_info_object.alloted_budget = int(budget)
+            Club_info_object.avail_budget = int(budget) - Club_info_object.spent_budget
+            # Club_info_object.spent_budget = int(0)
+            success_msg = "Budget alloted successfully"
+            Club_info_object.save()
+
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=10, err_msg=err_msg, success_msg=success_msg))
