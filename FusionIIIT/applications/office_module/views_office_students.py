@@ -160,7 +160,7 @@ def holdingMeeting(request):
             success_msg="Meeting created successfully. Waiting for Suprintendent for the MOM"
             office_module_DeanS_notif(request.user, Dean, 'meeting_booked')
             office_module_DeanS_notif(request.user, Superintendent, 'meeting_booked')
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=1, success_msg=success_msg, err_msg=err_msg))
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=1, success_msg=success_msg, err_msg=err_msg, flag_dean_s=True))
 
 
 """
@@ -187,7 +187,7 @@ def meetingMinutes(request):
         office_module_DeanS_notif(request.user, Dean, 'MOM_submitted')
         office_module_DeanS_notif(request.user, Superintendent, 'MOM_submitted')
         # office_module_DeanS_notif(request.user, 'gymkhana', 'meeting_booked')
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=6, success_msg=success_msg, err_msg=err_msg))
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=6, success_msg=success_msg, err_msg=err_msg, flag_superintendent=True))
 
 """
     View for validating and saving new hostel allotment
@@ -241,7 +241,7 @@ def hostelRoomAllotment(request):
         else:
             err_msg = 'Hostel Limit Exceeded!'
     print("error msg : " + err_msg)
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=7,err_msg=err_msg,success_msg=success_msg))
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=7,err_msg=err_msg,success_msg=success_msg, flag_superintendent=True))
 
 """
     View for deleting selected hostel allotment
@@ -273,7 +273,7 @@ def deleteHostelRoomAllotment(request):
 
         hostel_allotment.objects.get(id=id).delete()
         success_msg = 'Hostel Allotment Deleted Successfully'
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=7, success_msg=success_msg, err_msg=err_msg))
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=7, success_msg=success_msg, err_msg=err_msg, flag_superintendent=True))
 
 """
     View for deleting all previous hostel allotment at once
@@ -293,7 +293,7 @@ def deleteAllHostelRoomAllotment(request):
         item.save()
 
     success_msg = 'All Allotments Deleted Successfully'
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=7, success_msg=success_msg))
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=7, success_msg=success_msg, flag_superintendent=True))
 
 
 @login_required
@@ -324,7 +324,7 @@ def budgetApproval(request):
             office_module_DeanS_notif(request.user, Dean, 'budget_approved')
             office_module_DeanS_notif(request.user, Superintendent, 'budget_approved')
             # office_module_DeanS_notif(request.user, Co, 'budget_approved')
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=2, success_msg=success_msg,err_msg=err_msg))
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=2, success_msg=success_msg,err_msg=err_msg,  flag_dean_s=True))
 
 
 @login_required
@@ -341,7 +341,7 @@ def budgetRejection(request):
         success_msg = "Club Budget rejected successfully"
         office_module_DeanS_notif(request.user, request.user, 'budget_rejected')
         # office_module_DeanS_notif(request.user, Co, 'budget_rejected')
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=2, success_msg=success_msg))
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=2, success_msg=success_msg,  flag_dean_s=True))
 
 
 """
@@ -374,7 +374,7 @@ def clubApproval(request):
         office_module_DeanS_notif(request.user, request.user, 'club_approved')
         office_module_DeanS_notif(request.user, Dean, 'club_approved')
         # office_module_DeanS_notif(request.user, 'gymkhana', 'club_approved')
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=5,success_msg=success_msg))
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request, page=5,success_msg=success_msg,  flag_dean_s=True))
 
 
 """
@@ -397,7 +397,7 @@ def clubRejection(request):
         err_msg = "Club Rejected successfully"
         office_module_DeanS_notif(request.user, request.user, 'club_rejected')
         # office_module_DeanS_notif(request.user, 'gymkhana', 'club_rejected')
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html',getUniversalContext(request, page=5, err_msg=err_msg))
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html',getUniversalContext(request, page=5, err_msg=err_msg,  flag_dean_s=True))
 
 
 @login_required
@@ -414,7 +414,7 @@ def sessionApproval(request):
     success_msg = "Club Session approved succesfully"
     office_module_DeanS_notif(request.user, request.user, 'session_approved')
 
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html',getUniversalContext(request, page=11, success_msg=success_msg))
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html',getUniversalContext(request, page=11, success_msg=success_msg, flag_superintendent=True))
 
 @login_required
 def sessionRejection(request):
@@ -429,7 +429,7 @@ def sessionRejection(request):
     office_module_DeanS_notif(request.user, request.user, 'session_rejected')
     # office_module_DeanS_notif(request.user, 'gymkhana', 'session_rejected')
 
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html',getUniversalContext(request, page=11, success_msg=success_msg))
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html',getUniversalContext(request, page=11, success_msg=success_msg, flag_superintendent=True))
 
 """
     View for allotment of budget initiated by the Dean_S
@@ -453,7 +453,7 @@ def budgetAllot(request):
         Club_info_object.avail_budget= int(budget)
         Club_info_object.save()
         success_msg = "Budget alloted successfully"
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=10, success_msg=success_msg))
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=10, success_msg=success_msg, flag_superintendent=True))
 
 
 """
@@ -482,4 +482,4 @@ def budgetAllotEdit(request):
             success_msg = "Budget alloted successfully"
             Club_info_object.save()
 
-    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=10, err_msg=err_msg, success_msg=success_msg))
+    return render(request, 'officeModule/officeOfDeanStudents/officeOfDeanStudents.html', getUniversalContext(request,page=10, err_msg=err_msg, success_msg=success_msg, flag_superintendent=True))
