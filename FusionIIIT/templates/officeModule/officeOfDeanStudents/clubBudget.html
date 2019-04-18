@@ -163,7 +163,7 @@
 
                 <tbody>
                     {% for i in p_budget%}
-                <tr {% if i.status == "confirmed" %} class="positive" {% else %}  class="negative"  {% endif %}>
+                <tr {% if i.status == "confirmed" %} class="positive" {% else %}  class="negative"  {% endif %} >
                     <td> {{i.status}}</td>
                     <td> {{ i.club}}</td>
                     <td> {{ i.club.category }}</td>
